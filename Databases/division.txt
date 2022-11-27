@@ -1,0 +1,13 @@
+---Ingredients---
+idIng(class java.lang.Integer)|nom(class java.lang.String)|
+1;oeuf;
+2;huile;
+3;legumes;
+4;farine;
+
+---IngAndRec---
+idRec(class java.lang.Integer)|idIng(class java.lang.Integer)|
+1;1;
+1;2;
+2;1;
+

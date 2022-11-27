@@ -1,0 +1,12 @@
+---Appareil---
+id(class java.lang.Integer)|type(class java.lang.String)|
+1;pc;
+2;mac;
+3;android;
+
+---Famille---
+id(class java.lang.Integer)|nom(class java.lang.String)|
+1;legumes;
+2;fruits;
+3;viandes;
+
