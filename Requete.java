@@ -1,5 +1,6 @@
 package bddrelationnel;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.reflect.*;
@@ -8,27 +9,38 @@ public class Requete {
     JavaSQL appli;
     Database baseDeDonnees;
 
+    public JavaSQL getAppli(){
+        return this.appli;
+    }
+
+    public Database getBaseDeDonnees(){
+        return this.baseDeDonnees;
+    }
+
     public Requete(JavaSQL appli) {
         this.appli = appli;
     }
 
-    public void useDatabase(String nom) {
-        for(int i = 0; i < this.appli.getBaseDeDonnees().size(); i++){
-            if(this.appli.getBaseDeDonnees().get(i).getNom().equalsIgnoreCase(nom))
+    public void useDatabase(String nom) throws Exception {
+        for (int i = 0; i < this.appli.getBaseDeDonnees().size(); i++) {
+            if (this.appli.getBaseDeDonnees().get(i).getNom().equalsIgnoreCase(nom))
                 this.baseDeDonnees = appli.getBaseDeDonnees().get(i);
         }
+        if (this.baseDeDonnees == null)
+            throw new Exception("la base de donnees ' " + nom + " ' n'existe pas");
     }
 
-    public Table executeQuery(String sql) throws Exception {
-        Table result = new Table("Resultat");
+    public Object executeQuery(String sql) throws Exception {
+        Object result = null;
         try {
-            String[] req = sql.split(" ");
-            switch (req[0]) {
+            String req = sql.split(";")[0];
+            switch (req.split(" ")[0].toLowerCase()) {
                 case "select":
                     Select select = new Select();
                     select.fillAttributes(req, 0, this.baseDeDonnees);
                     result = select.execute();
-                    result.showTable();
+                    System.out.println("Resultat final");
+                    ((Table) result).showTable();
                     break;
 
                 case "insert":
@@ -36,6 +48,7 @@ public class Requete {
                     insert.fillAttributes(req, this.baseDeDonnees);
                     insert.execute();
                     this.baseDeDonnees.reset();
+                    result = "1 row affected";
                     break;
 
                 case "update":
@@ -43,6 +56,7 @@ public class Requete {
                     update.fillAttributes(req, this.baseDeDonnees);
                     update.execute();
                     this.baseDeDonnees.reset();
+                    result = "Update successful"; 
                     break;
 
                 case "delete":
@@ -50,24 +64,41 @@ public class Requete {
                     delete.fillAttributes(req, this.baseDeDonnees);
                     delete.execute();
                     this.baseDeDonnees.reset();
+                    result = "Delete successful"; 
                     break;
 
                 case "create":
                     Create create = new Create();
-                    create.execute(req, this.appli);
+                    create.execute(req, this);
+                    result = this.appli;
+                    if(req.split(" ")[1].equalsIgnoreCase("table"))this.baseDeDonnees.reset();
                     break;
 
                 case "show":
-                    this.appli.showDatabases();
+                    if (req.split(" ")[1].equalsIgnoreCase("databases")) {
+                        this.appli.showDatabases();
+                        result = this.appli;
+                    } else if (req.split(" ")[1].equalsIgnoreCase("tables")) {
+                        if(this.baseDeDonnees == null)
+                            throw new Exception("No database selected");
+                        this.baseDeDonnees.showListTable();
+                        result = this.baseDeDonnees;
+                    } else {
+                        result = "";
+                    }
+                    break;
+
+                case "use":
+                    this.useDatabase(req.split(" ")[1]);
+                    result = "Database changed";
                     break;
 
                 default:
-                    this.useDatabase(req[1]);
                     break;
             }
             return result;
         } catch (Exception e) {
-            // e.printStackTrace();
+            e.printStackTrace();
             throw e;
         }
     }

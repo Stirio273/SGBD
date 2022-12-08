@@ -1,9 +1,10 @@
 package bddrelationnel;
 
+import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Table {
+public class Table implements Serializable {
     String name;
     String[] colonnes;
     Class[] types;
@@ -57,6 +58,28 @@ public class Table {
         this.name = name;
         this.colonnes = colonnes;
         this.types = types;
+    }
+
+    public Table clone() {
+        Table clone = new Table("clone");
+        String[] colClone = new String[this.colonnes.length];
+        for (int i = 0; i < colClone.length; i++) {
+            colClone[i] = new String(this.colonnes[i]);
+        }
+        clone.setColonnes(colClone);
+        clone.setTypes(this.types);
+        for (int i = 0; i < this.elements.size(); i++) {
+            Object[] o = new Object[colClone.length];
+            o = this.elements.get(i).clone();
+            /*
+             * for (int n = 0; n < colClone.length; n++) {
+             * o[n] = this.elements.get(i).clone();
+             * }
+             */
+            clone.elements.add(o);
+            System.out.println(o[0]);
+        }
+        return clone;
     }
 
     public static Table turnIntoTable(List<Integer> listeLigne) {

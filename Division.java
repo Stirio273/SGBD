@@ -26,10 +26,11 @@ public class Division extends KeyWord {
         this.position = this.previous.getPosition() + 2;
     }
 
-    public void fillAttributes(String[] req, Database bdd) {
+    public void fillAttributes(String re, Database bdd) throws Exception {
+        String[] req = re.split(" ");
         this.t1 = ((Select) this.getPrevious().getPrevious()).execute();
         this.next = new Select();
-        ((Select) this.next).fillAttributes(req, this.position + 1, bdd);
+        ((Select) this.next).fillAttributes(re, this.position + 1, bdd);
         this.t2 = ((Select) this.next).execute();
     }
 

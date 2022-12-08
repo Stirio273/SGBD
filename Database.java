@@ -1,10 +1,11 @@
 package bddrelationnel;
 
 import donnees.Fichier;
+import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Database {
+public class Database implements Serializable {
     String nom = "MyBDD";
     List<Table> table = new ArrayList<Table>();
     Fichier file;
@@ -79,8 +80,20 @@ public class Database {
                 this.table.add(t);
             } while (line < this.file.getData().size());
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            return;
         }
+    }
+
+    public void showListTable() {
+        System.out.println("+--------------------+");
+        System.out.println("| Tables_in_" + this.nom + JavaSQL.espaceRestant("Tables_in_" + this.nom) + "|");
+        System.out.println("+--------------------+");
+        for (int i = 0; i < this.table.size(); i++) {
+            System.out.println("| " + this.table.get(i).getName()
+                    + JavaSQL.espaceRestant(this.table.get(i).getName()) + "|");
+        }
+        System.out.println("+--------------------+\n");
     }
 
     public void reset() {

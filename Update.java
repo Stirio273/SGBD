@@ -8,7 +8,10 @@ public class Update extends UpdateKeyWord {
         this.position = 0;
     }
 
-    public void fillAttributes(String[] req, Database bdd) throws Exception {
+    public void fillAttributes(String re, Database bdd) throws Exception {
+        String[] req = re.split(" ");
+        if (bdd == null)
+            throw new Exception("No database selected");
         if (req.length < 4 || !req[2].equalsIgnoreCase("set"))
             throw new Exception("You have an error in your sql syntax");
         this.relation = bdd.getTableByName(req[1]);
@@ -22,7 +25,7 @@ public class Update extends UpdateKeyWord {
 
     public void execute() {
         int taille = this.relation.getElements().size();
-        if (this.tableFiltre.getElements().size() != 0)
+        if (this.tableFiltre.getElements().size() != 0 || this.next != null)
             taille = this.tableFiltre.getElements().size();
         for (int i = 0; i < taille; i++) {
             for (int k = 0; k < colonnes.length; k++) {

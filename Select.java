@@ -15,15 +15,18 @@ public class Select extends KeyWord {
         super("select");
     }
 
-    public void fillAttributes(String[] req, int position, Database bdd) {
+    public void fillAttributes(String re, int position, Database bdd) throws Exception {
+        String[] req = re.split(" ");
+        if (bdd == null)
+            throw new Exception("No database selected");
         this.setPosition(position);
         if (req[this.position + 1].equalsIgnoreCase("*")) {
             this.colonnes = null;
         } else
             this.colonnes = req[this.position + 1].split(",");
         if (req[this.position + 2].equalsIgnoreCase("from")) {
-            this.next = new From(this, bdd.getTableByName(req[this.position + 3]));
-            ((From) this.next).fillAttributes(req, bdd);
+            this.next = new From(this, bdd.getTableByName(req[this.position + 3]).clone());
+            ((From) this.next).fillAttributes(re, bdd);
         }
     }
 

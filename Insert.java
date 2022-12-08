@@ -34,7 +34,10 @@ public class Insert extends KeyWord {
         this.position = 0;
     }
 
-    public void fillAttributes(String[] req, Database bdd) throws Exception {
+    public void fillAttributes(String re, Database bdd) throws Exception {
+        String[] req = re.split(" ");
+        if (bdd == null)
+            throw new Exception("No database selected");
         if (!req[1].equalsIgnoreCase("into") || req.length != 4) {
             throw new Exception("You have an error in your sql syntax");
         }
@@ -70,7 +73,7 @@ public class Insert extends KeyWord {
             }
         }
         this.table.getElements().add(o);
-        this.table.showTable();
+        // this.table.showTable();
     }
-    
+
 }

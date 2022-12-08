@@ -72,7 +72,7 @@ public class Join extends KeyWord {
             if (produit.getColonnes()[i].equalsIgnoreCase(colonneT2))
                 indiceCol[1] = i;
         }
-        produit.showTable();
+        // produit.showTable();
         for (int i = 0; i < produit.getElements().size(); i++) {
             if (!produit.getElements().get(i)[indiceCol[0]].toString()
                     .equalsIgnoreCase(produit.getElements().get(i)[indiceCol[1]].toString())) {

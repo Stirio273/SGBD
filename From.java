@@ -18,10 +18,11 @@ public class From extends KeyWord {
         this.relation = t;
     }
 
-    public void fillAttributes(String[] req, Database bdd) {
+    public void fillAttributes(String re, Database bdd) throws Exception {
+        String[] req = re.split(" ");
         if (req.length <= this.position + 2)
             return;
-        switch (req[this.position + 2]) {
+        switch (req[this.position + 2].toLowerCase()) {
             case "where":
                 this.next = new Where(this);
                 ((Where) this.next).execute(req);
@@ -35,12 +36,16 @@ public class From extends KeyWord {
 
             case "division":
                 this.next = new Division(this);
-                ((Division) this.next).fillAttributes(req, bdd);
+                ((Division) this.next).fillAttributes(re, bdd);
                 this.setRelation(Requete.division(((Division) this.next).getT1(), ((Division) this.next).getT2()));
                 break;
 
+            case "order":
+                this.next = new Order(this);
+                ((Order) this.next).fillAttributes(req, this.position + 2);
+                ((Order) this.next).execute();
+                break;
             default:
-
                 break;
         }
     }
