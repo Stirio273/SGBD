@@ -1,3 +1,3 @@
 cls
 javac -d . *.java
-java Main
+java socket.SocketServer 4444

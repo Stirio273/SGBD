@@ -43,7 +43,6 @@ public class SocketClient {
                 }
                 out.println(fromUser);
             }
-            dataForMe.close();
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + hostName);
             System.exit(1);

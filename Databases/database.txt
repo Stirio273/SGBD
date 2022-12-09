@@ -9,4 +9,5 @@ id(class java.lang.Integer)|nom(class java.lang.String)|
 1;legumes;
 2;fruits;
 3;viandes;
+4;legumes;
 

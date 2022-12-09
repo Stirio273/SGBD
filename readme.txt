@@ -4,6 +4,7 @@ Fonctionnalites :
 	_insertion, mise à jour, suppression
 	_jointure, triage ordre croissant
 	_selection (avec condition)
+	_multi-thread
 
 Syntax :
 	_create database <name>;
